@@ -28,3 +28,27 @@ data:
       "max_buffered_events": {{ .Values.appParams.maxBufferedEvents}},
       "competingConsumers": {{ .Values.appParams.competingConsumers}}
     }
+
+---
+
+{{- if .Values.global.secrets.minio.enable }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "orc-event-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "serverPort": "{{ .Values.orcEventController.serverPort }}",
+      "kafkaBrokers": "{{ .Values.orcEventController.kafkaBrokers }}",
+      "redisServer": "{{ .Values.orcEventController.redisServer }}",
+      "consumerGroup": "{{ .Values.orcEventController.consumerGroup }}",
+      "producerClient": "{{ .Values.orcEventController.producerClient }}",
+      "kafkaTopic" : "{{ .Values.orcEventController.kafkaTopic }}",
+      "redisHash": "{{ .Values.orcEventController.redisHash }}",
+      "redisSortedSet": "{{ .Values.orcEventController.redisSortedSet }}",
+      "kafkaConsumedMsgsCount": {{ .Values.orcEventController.kafkaConsumedMsgsCount }},
+      "kafkaConsumeTimeout": {{ .Values.orcEventController.kafkaConsumeTimeout }}
+    }
+{{- end }}

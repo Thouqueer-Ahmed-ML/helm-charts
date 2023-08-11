@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "orc-event-webhook.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace}}
+  annotations:
+    kubernetes.io/ingress.class: snappyflow-apm
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /logarchival(/|$)(.*)
+        backend:
+          service:
+            name: {{ include "orc-event-webhook.fullname" . }}
+            port:
+              number: 80
+        pathType: Prefix

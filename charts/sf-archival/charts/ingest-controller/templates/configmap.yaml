@@ -54,7 +54,7 @@ data:
       "errors.tolerance": "all",
       "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
       "behavior.on.null.values": "ignore",
-{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.gcs.enable }}
+{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.gcs.enable .Values.global.secrets.minio.enable }}
       "connector.class": "io.confluent.connect.s3.S3SinkConnector",
       "s3.part.size": 5242880,
       "storage.class": "io.confluent.connect.s3.storage.S3Storage",

@@ -3,7 +3,7 @@ cbsparkevent:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/cb-spark-event
-    tag: '4'
+    tag: '2-0-91'
 compactionImage: snappyflowml/spark-compact-orc:2
 fullnameOverride: ''
 jobserver:
@@ -20,7 +20,7 @@ jobserver:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: '19'
+    tag: '2-0-91'
   serverPort: 5002
   service:
     servicePort: 5002
@@ -37,7 +37,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: '12'
+    tag: '2-0-91'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler

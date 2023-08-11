@@ -41,6 +41,10 @@ data:
     ES_MANAGER_PORT: "{{ .Values.global.esmanager.service.port }}"
 
     SERVERID: "{{ .Values.global.sfapm.serverid }}"
+    OAUTH_CLIENT_ID: "{{ .Values.global.sfapm.OAUTH_CLIENT_ID }}"
+    OAUTH_CLIENT_SECRET: "{{ .Values.global.sfapm.OAUTH_CLIENT_SECRET}}"
+    OAUTH_TOKEN_SERVER: "{{ .Values.global.sfapm.OAUTH_TOKEN_SERVER}}"
+    OAUTH_AUTH_URL: "{{ .Values.global.sfapm.OAUTH_AUTH_URL}}"
 
     {{- if .Values.global.keycloak.enabled }}
     KEYCLOAK_MODE: "True"

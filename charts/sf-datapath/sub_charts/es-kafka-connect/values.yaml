@@ -57,7 +57,7 @@ heapOptions: -Xms450M -Xmx1800M -Xmns350M -Xmnx1400M -XX:MaxDirectMemorySize=200
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/apm-kafka-connect
-  tag: '2-0-89'
+  tag: '2-0-90'
 inByteRate: 1736111
 jmx:
   port: 5555

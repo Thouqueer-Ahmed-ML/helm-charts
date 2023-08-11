@@ -25,7 +25,7 @@ spec:
             image: snappyflowml/sink-monitor-consumer-groups:7
             imagePullPolicy: IfNotPresent
             command: ["bash"]
-{{- if .Values.global.secrets.aws.enable }}
+{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.minio.enable }}
             args: ["-c", "python app.py connect-s3"]
 {{- else if .Values.global.secrets.gcs.enable }}
             args: ["-c", "python app.py connect-gcs"]

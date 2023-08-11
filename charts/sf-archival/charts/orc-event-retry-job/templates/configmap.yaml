@@ -1,0 +1,18 @@
+{{- if .Values.global.secrets.minio.enable }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+    name: {{ template "orc-event-retry-job.fullname" . }}-config
+    namespace: {{ .Release.Namespace }}
+data:
+    config.json: |-
+        {
+          "client_address": "{{ .Values.redisServer }}",
+          "kafka_broker": "{{ .Values.kafkaBroker }}",
+          "kafka_topic": "{{ .Values.kafkaTopic }}",
+          "reattempt_send_to_kafka": {{ .Values.reattemptSendToKafka }},
+          "sorted_set_key": "{{ .Values.sortedSetKey }}",
+          "hash_set_key": "{{ .Values.hashSetKey }}",
+          "retry_bucket": "{{ .Values.retryBucket }}"
+        }
+{{- end }}

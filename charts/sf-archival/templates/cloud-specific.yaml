@@ -17,6 +17,13 @@ data:
   AWS_SECRET_ACCESS_KEY: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
   {{- end }}
+  {{- else if .Values.global.secrets.minio.enable }}
+  CLOUD_NAME: MINIO
+  AWS_ACCESS_KEY_ID: {{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: {{ .Values.global.secrets.minio.AWS_DEFAULT_REGION }}
+  MINIO_ENDPOINT: {{ .Values.global.secrets.minio.MINIO_ENDPOINT }}
+  MINIO_QUEUE_ARN: {{ .Values.global.secrets.minio.MINIO_QUEUE_ARN }}
   {{- else if .Values.global.secrets.gcs.enable }}
   CLOUD_NAME: GCP
   GCP_DEFAULT_REGION: {{ .Values.global.secrets.gcs.GCP_DEFAULT_REGION }}

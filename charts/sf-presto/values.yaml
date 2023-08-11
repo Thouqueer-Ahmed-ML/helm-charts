@@ -57,6 +57,13 @@ aws:
 azure:
   enabled: false
 
+minio:
+  enabled: false
+  AWS_ACCESS_KEY_ID: XXXX
+  AWS_SECRET_ACCESS_KEY: XXXX
+  AWS_DEFAULT_REGION: default
+  MINIO_ENDPOINT: XXXX
+
 env:
   # Required onlu for azure
   STORAGE_ACCOUNT_NAME: ""
@@ -93,13 +100,3 @@ terminationGracePeriodSeconds: 30
 nodeSelector: {}
 tolerations: []
 affinity: {}
-imagePullSecrets: []
-
-
-global:
-  snappyflowProjectLabel: snappyflow/projectname
-  snappyflowAppLabel: snappyflow/appname
-
-  snappyflowProjectName: "snappyflow-app"
-  snappyflowAppName: "sf-presto"
-

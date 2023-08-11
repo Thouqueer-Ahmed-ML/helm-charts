@@ -70,7 +70,18 @@ spec:
         - name: ui
           securityContext:
             {{- toYaml .Values.global.securityContext | nindent 12 }}
+          {{- if eq .Values.global.sfapmui.brand_name "goals101" }}
+          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag_goals101 }}"
+          {{- end }}
+          {{- if eq .Values.global.sfapmui.brand_name "esds" }}
+          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag_esds }}"
+          {{- end }}
+          {{- if eq .Values.global.sfapmui.brand_name "visa" }}
+          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag_visa }}"
+          {{- end }}
+          {{- if eq .Values.global.sfapmui.brand_name "" }}
           image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag }}"
+          {{- end }}
           imagePullPolicy: {{ .Values.sfapmui.image.pullPolicy }}
           env:
           {{- range .Values.global.sfapmui.env }}

@@ -8,5 +8,5 @@ podSecurityContext: {}
 esmanager:
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: '1-0-63'
+    tag: '1-0-64'
     pullPolicy: IfNotPresent

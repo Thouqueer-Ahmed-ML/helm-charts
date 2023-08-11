@@ -188,6 +188,7 @@ global:
   securityContext: {}
 
   sfapmui:
+    brand_name: ""
     replicaCount: 1
 
     autoscaling:
@@ -282,6 +283,10 @@ global:
       command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
 
   sfapm:
+    OAUTH_CLIENT_ID: ""
+    OAUTH_CLIENT_SECRET: ""
+    OAUTH_TOKEN_SERVER: ""
+    OAUTH_AUTH_URL: ""
     replicaCount: 2
     cloud: ""
     ingress:

@@ -42,6 +42,15 @@ spec:
             - sh
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "dataset-controller.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
+{{- if .Values.global.secrets.minio.enable }}
+        - name: kafka-ready
+          image: "snappyflowml/kafka-zk-check:alpha"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - ./kafka-init.sh
+            - {{ .Values.global.kafkaBrokers }}
+{{- end }}
       containers:
         - name: dataset-raw-controller
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -52,8 +61,22 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
+{{- if .Values.global.secrets.minio.enable }}
+          env:
+          - name: ORC_EVENT_CONTROLLER
+            value: "{{ .Values.orcEventController.urlPath }}"
+{{- end }}
 {{- if not .Values.global.development }}
           resources: {{- toYaml .Values.containerResources | nindent 12 }}
+{{- end }}
+{{- if .Values.global.secrets.minio.enable }}
+        - name: orc-event-controller
+          image: "{{ .Values.orcEventController.image.repository }}:{{ .Values.orcEventController.image.tag }}"
+          imagePullPolicy: {{ .Values.orcEventController.image.pullPolicy }}
+          volumeMounts:
+          - name: orc-event-controller-config-volume
+            mountPath: /etc/conf
+          resources: {{- toYaml .Values.orcEventController.containerResources | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -71,3 +94,8 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "dataset-raw-controller.fullname" . }}
+{{- if .Values.global.secrets.minio.enable }}
+        - name: orc-event-controller-config-volume
+          configMap:
+            name: {{ template "orc-event-controller.fullname" . }}
+{{- end }}

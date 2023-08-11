@@ -138,4 +138,4 @@ systemmigration:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/datapath-system-migration
-    tag: '2-0-89'
+    tag: '2-0-90'

@@ -28,7 +28,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable .Values.global.secrets.azure.enable }}
+    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable .Values.global.secrets.azure.enable .Values.global.secrets.minio.enable }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:

@@ -44,7 +44,7 @@ httpsServicePort: 8081
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/sf-kafka-rest
-  tag: '2-0-89'
+  tag: '2-0-90'
 jmx:
   port: 5555
 livenessProbe:

@@ -50,6 +50,13 @@ global:
       AZURE_SERVICEBUS_QUEUE_NAME: XXXX
       AZURE_SERVICEBUS_CONNECTION_STR: XXXX
       SPARK_HS_CONTAINER_NAME: sparkhs
+    minio:
+      enable: false
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: default
+      MINIO_ENDPOINT: XXXX
+      MINIO_QUEUE_ARN: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
@@ -163,6 +170,61 @@ query-controller:
 raw-query-exec-controller:
   maxGBToProcessDuringHistogramQuery: 0.2
   maxGBToProcessDuringLogQuery: 0.05
+
+orc-event-retry-job:
+  redisServer: "localhost:6379"
+  kafkaBroker: "localhost:9092"
+  kafkaTopic: "sf-orcevents"
+  reattemptSendToKafka: 5
+  sortedSetKey: "sf_orc_sortedset"
+  hashSetKey: "sf_orc_hashset"
+  retryBucket: 15
+
+orc-event-webhook:
+  api_token: "A34DFGGGRTYU"
+  topic_name: "sf-orcevents"
+  num_partitions: 3
+  replication_factor: 2
+  retention_ms: "86400000"
+  type": "log"
+  service:
+    servicePort: 6003
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 400
+    targetMemoryUtilizationPercentage: 400
+
+dataset-raw-controller:
+  orcEventController:
+    urlPath: 'http://localhost:18080/orc-event-controller/v1/orcevents'
+    serverPort: ":18080"
+    kafkaBrokers: "localhost:9092"
+    redisServer: "localhost:6379"
+    consumerGroup: "sf-consumer"
+    producerClient: "sf-producer"
+    kafkaTopic: "sf-orcevents"
+    redisHash: "sf_orc_hashset"
+    redisSortedSet: "sf_orc_sortedset"
+    kafkaConsumedMsgsCount: 100
+    kafkaConsumeTimeout: 2
+
+redis:
+  archivalEnabled: true
+  persistence:
+    size: 2Gi
+
+hooks:
+  systemMigration:
+    image:
+      repository: snappyflowml/archival-system-migration
+      pullPolicy: IfNotPresent
+      tag: '2-0-91'
+  systemInit:
+    image:
+      repository: snappyflowml/archival-system-init
+      pullPolicy: IfNotPresent
+      tag: '2-0-91'
 
 # use these values if you want to override the db values for hive and hadoop chart
 # hive-and-hadoop:

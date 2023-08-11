@@ -1,0 +1,44 @@
+{{- if .Values.global.secrets.minio.enable }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-system-init
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-weight": "0"
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      name: {{ .Release.Name }}-system-init
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: "{{ .Values.hooks.systemInit.image.repository }}:{{ .Values.hooks.systemInit.image.tag }}"
+        imagePullPolicy: Always
+        env:
+          - name: CLOUD_NAME
+            value: MINIO
+          - name: MINIO_ENDPOINT
+            value: {{ .Values.global.secrets.minio.MINIO_ENDPOINT }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}
+          - name: AWS_REGION
+            value: {{ .Values.global.secrets.minio.AWS_DEFAULT_REGION }}
+{{- end }}

@@ -1,0 +1,42 @@
+affinity: {}
+containerResources:
+  webhook:
+    limits:
+      cpu: 200m
+      memory: 250Mi
+    requests:
+      cpu: 100m
+      memory: 150Mi
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/orc-event-webhook
+  tag: '2-0-91'
+nameOverride: ''
+nodeSelector: {}
+schedulerName: sf-scheduler
+serverPort: :6003
+
+# topic details
+topic_name: "sf-orcevents"
+num_partitions: 3
+replication_factor: 2
+retention_ms: "86400000"
+type": "log"
+
+# api token
+api_token: "A34DFGGGRTYU"
+
+service:
+  servicePort: 6003
+tolerations: []
+
+# autoscaling details
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 3
+  # Below values are based on requests.
+  # Hence value > 100 needs to be calculated based on set limits
+  # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+  targetCPUUtilizationPercentage: 250
+  targetMemoryUtilizationPercentage: 468

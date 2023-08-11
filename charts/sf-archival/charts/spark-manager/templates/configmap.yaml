@@ -85,7 +85,7 @@ data:
               "--conf",
               "spark.eventLog.enabled=true",
               "--conf",
-{{- if .Values.global.secrets.aws.enable }}
+{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.minio.enable }}
               "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- else if .Values.global.secrets.azure.enable }}
               "spark.eventLog.dir=wasbs://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
@@ -136,6 +136,19 @@ data:
               "spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
               "--conf",
               "spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY={{ .Release.Name }}-aws-secret:secret",
+{{- else if .Values.global.secrets.minio.enable }}
+              "--conf",
+              "spark.hadoop.fs.s3a.endpoint={{ .Values.global.secrets.minio.MINIO_ENDPOINT }}",
+              "--conf",
+              "spark.hadoop.fs.s3a.access.key={{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}",
+              "--conf",
+              "spark.hadoop.fs.s3a.secret.key={{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}",
+              "--conf",
+              "spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem",
+              "--conf",
+              "spark.hadoop.fs.s3a.connection.ssl.enabled=false",
+              "--conf",
+              "spark.hadoop.fs.s3a.path.style.access=true",
 {{- end }}
               "--conf",
               "spark.kubernetes.namespace={{ .Release.Namespace }}",

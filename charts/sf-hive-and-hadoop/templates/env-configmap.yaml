@@ -34,9 +34,16 @@ data:
   YARN_CONF_yarn_resourcemanager_address: resourcemanager:8032
   YARN_CONF_yarn_resourcemanager_scheduler_address: resourcemanager:8030
   YARN_CONF_yarn_resourcemanager_resource__tracker_address: resourcemanager:8031
-{{ if eq .Values.global.secrets.azure.enable true }}
+{{- if eq .Values.global.secrets.azure.enable true }}
   METASTORE_AUX_JARS_PATH: /opt/hadoop-2.10.1/share/hadoop/tools/lib/hadoop-azure-2.10.1.jar:/opt/hadoop-2.10.1/share/hadoop/tools/lib/azure-storage-7.0.1.jar
   HIVE_AUX_JARS_PATH: /opt/hadoop-2.10.1/share/hadoop/tools/lib/hadoop-azure-2.10.1.jar:/opt/hadoop-2.10.1/share/hadoop/tools/lib/azure-storage-7.0.1.jar
   HIVE_SITE_CONF_fs_azure: org.apache.hadoop.fs.azure.NativeAzureFileSystem
   HIVE_SITE_CONF_fs_azure_account_key_{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}_blob_core_windows_net: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}
+{{- else if .Values.global.secrets.minio.enable }}
+  HIVE_SITE_CONF_fs_s3a_connection_ssl_enabled: "false"
+  HIVE_SITE_CONF_fs_s3a_endpoint: {{ .Values.global.secrets.minio.MINIO_ENDPOINT }}
+  HIVE_SITE_CONF_fs_s3a_access_key: {{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}
+  HIVE_SITE_CONF_fs_s3a_secret_key: {{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}
+  HIVE_SITE_CONF_fs_s3a_path_style_access: "true"
+  HIVE_SITE_CONF_fs_s3a_impl: org.apache.hadoop.fs.s3a.S3AFileSystem
 {{- end}}

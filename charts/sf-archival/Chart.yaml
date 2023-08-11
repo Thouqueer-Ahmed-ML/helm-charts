@@ -4,11 +4,23 @@ dependencies:
 - condition: global.hive.internal.enabled
   name: hive-and-hadoop
   repository: https://snappyflow.github.io/helm-charts
-  version: 0.1.9
+  version: 0.1.12
 - condition: spark-history-server.enabled
   name: spark-history-server
   repository: https://snappyflow.github.io/helm-charts
   version: 1.4.7
+- condition: global.secrets.minio.enable
+  name: redis
+  version: 0.2.16
+  repository: https://snappyflow.github.io/helm-charts/
+- name: orc-event-webhook
+  repository: file://charts/orc-event-webhook
+  version: 0.1.0
+  condition: global.secrets.minio.enable
+- name: orc-event-retry-job
+  repository: file://charts/orc-event-retry-job
+  version: 0.1.0
+  condition: global.secrets.minio.enable
 description: A Helm chart for Kubernetes
 name: sf-archival
-version: 2.0.88
+version: 2.0.93

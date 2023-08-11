@@ -9,22 +9,23 @@ metadata:
 data:
   hive.properties: |+ 
     connector.name = hive-hadoop2
-    {{- if .Values.aws.enabled }}
     hive.metastore.uri = thrift://NODE_IP:NODE_PORT
-    hive.s3.use-instance-credentials = true
     hive.non-managed-table-writes-enabled = true
+    hive.time-zone = UTC
+    hive.metastore-timeout = 60s
+    {{- if .Values.aws.enabled }}   
     hive.s3select-pushdown.enabled = true
     hive.s3.use-instance-credentials = true
-    hive.time-zone = UTC
-    hive.metastore-timeout=60s
     {{- else if .Values.azure.enabled }}
     # HDFS
     hive.config.resources=/home/presto-server-0.277/etc/azure-site.xml
-    # Metastore
-    hive.metastore.uri=thrift://NODE_IP:NODE_PORT
-    hive.non-managed-table-writes-enabled=true
-    hive.time-zone=UTC
-    hive.metastore-timeout=60s
     # Permissions
     hive.allow-drop-table=true
+    {{- else if .Values.minio.enabled }}
+    hive.s3select-pushdown.enabled = true
+    hive.s3.path-style-access = true
+    hive.s3.endpoint = {{ .Values.minio.MINIO_ENDPOINT }}
+    hive.s3.aws-access-key = {{ .Values.minio.AWS_ACCESS_KEY_ID }}
+    hive.s3.aws-secret-key = {{ .Values.minio.AWS_SECRET_ACCESS_KEY }}
+    hive.s3.ssl.enabled = false
     {{- end }}

@@ -35,6 +35,12 @@ global:
       # Set below credentials to access azure storage account from hive/hadoop pods
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+    minio:
+      enable: false
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: default
+      MINIO_ENDPOINT: XXXX
 
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname

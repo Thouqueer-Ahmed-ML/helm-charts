@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "orc-event-webhook.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "serverPort": "{{ .Values.serverPort }}",
+      "API_TOKEN": "{{ .Values.api_token }}",
+      "kafkaBrokers": "{{ .Values.global.kafkaBrokers }}",
+      "topic_type_details": {
+            "topic_name": "{{ .Values.topic_name }}",
+            "num_partitions": {{ .Values.num_partitions }},
+            "replication_factor": {{ .Values.replication_factor }},
+            "retention_ms": "{{ .Values.retention_ms }}",
+            "type": "log"
+        }
+    }

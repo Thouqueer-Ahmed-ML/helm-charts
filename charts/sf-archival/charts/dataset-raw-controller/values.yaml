@@ -29,7 +29,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-raw-controller
-  tag: '5'
+  tag: '2-0-91'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations:
@@ -47,3 +47,26 @@ serverPort: :5002
 service:
   servicePort: 5002
 tolerations: []
+orcEventController:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/orc-event-controller
+    tag: '2-0-91'
+  containerResources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  urlPath: 'localhost:18080/orc-event-controller/v1/orcevents'
+  serverPort: ":18080"
+  kafkaBrokers: "localhost:9092"
+  redisServer: "localhost:6379"
+  consumerGroup: "my-consumer"
+  producerClient: "my-producer"
+  kafkaTopic: "my-topic"
+  redisHash: "orcHash"
+  redisSortedSet: "orcSortedSet"
+  kafkaConsumedMsgsCount: 100
+  kafkaConsumeTimeout: 2

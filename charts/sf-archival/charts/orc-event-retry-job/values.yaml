@@ -1,0 +1,45 @@
+# Default values for orc-event-retry-job.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+redisServer: "localhost:6379"
+kafkaBroker: "localhost:9092"
+kafkaTopic: "orc-event-retry"
+reattemptSendToKafka: 5
+sortedSetKey: "my_sorted_set"
+hashSetKey: "my_hash_set"
+retryBucket: 15
+
+replicaCount: 1
+
+image:
+  repository: snappyflowml/orc-event-retry-job
+  pullPolicy: IfNotPresent
+  tag: '2-0-91'
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+schedule: '*/15 * * * *'
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
